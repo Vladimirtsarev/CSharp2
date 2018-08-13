@@ -12,7 +12,7 @@ namespace Game
     {
         protected Point Position;
         protected Point Direction;
-        protected Size Size;
+        public Size Size;
 
         public delegate void Message();
 

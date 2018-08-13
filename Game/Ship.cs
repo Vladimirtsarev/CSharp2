@@ -20,8 +20,10 @@ namespace Game
         /// </summary>
         public override void Draw()
         {
-            Game.buffer.Graphics.FillEllipse(Brushes.Wheat, Position.X, Position.Y,
-            Size.Width, Size.Height);
+
+            Game.buffer.Graphics.FillRectangle(Brushes.Wheat, Position.X, Position.Y, Size.Width, Size.Height);
+            Game.buffer.Graphics.FillEllipse(Brushes.Wheat, Position.X + Size.Width / 2, Position.Y, Size.Width, Size.Height);
+            Game.buffer.Graphics.DrawString(Energy.ToString(), new Font(FontFamily.GenericSansSerif, 8, FontStyle.Bold), Brushes.Green, Position.X + Size.Width / 2 - 10, Position.Y+3);
         }
         public override void Update()
         {

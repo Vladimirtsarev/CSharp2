@@ -12,13 +12,15 @@ namespace Game
         public Bullet(Point pos, Point dir, Size size) : base(pos, dir, size) { }
         public override void Draw()
         {
-            Game.buffer.Graphics.DrawRectangle(Pens.Orange, Position.X, Position.Y, Size.Width, Size.Height);
+            Game.buffer.Graphics.DrawRectangle(Pens.Red, Position.X, Position.Y, Size.Width, Size.Height);
         }
         public override void Update()
         {
-            Position.X = Position.X + 2;
+            Position.X = Position.X + 3;
+            if (Position.X >= 810)
+                Position.X = 50;
         }
-
+        
         public override void Crash()
         { }
     }

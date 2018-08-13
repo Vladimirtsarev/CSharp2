@@ -156,7 +156,8 @@ namespace Game
                     if (!obj.Collision(ship)) continue;
                     obj.Crash();
                     Random rnd = new Random();
-                    ship?.EnergyLow(rnd.Next(1, 10));
+                    //ship?.EnergyLow(rnd.Next(1, 10));
+                    ship?.EnergyLow(obj.Size.Height/3);
                     System.Media.SystemSounds.Asterisk.Play();
                     if (ship.Energy <= 0) ship?.Die();
                 }
@@ -189,18 +190,18 @@ namespace Game
 
             for (int i = 0; i < starCount; i++)
             {
-                objs.Add(new Star(new Point(600, i * 20), new Point( - i, 0), new Size(5, 5)));
+                objs.Add(new Star(new Point(0, i * 20), new Point( - i, 0), new Size(5, 5)));
             }
 
-            bullet = new Bullet(new Point(10, 200), new Point(5, 0), new Size(4, 1));
+            bullet = new Bullet(new Point(50, 200), new Point(5, 0), new Size(4, 1));
 
-            ship = new Ship(new Point(10, 195), new Point(5, 5), new Size(10, 10));
+            ship = new Ship(new Point(10, 190), new Point(5, 5), new Size(40, 20));
             //asteroids = new Asteroid[15];
 
             for (int i = 0; i < asteroidCount; i++)
             {
                 int r = rand.Next(5, 50);
-                objs.Add(new Asteroid(new Point(100, rand.Next(0, Game.Height)), new Point(-r / 5, r), new Size(r, r)));
+                objs.Add(new Asteroid(new Point(800, rand.Next(0, Game.Height)), new Point(-r / 5, r/5), new Size(r, r)));
             }
 
 
@@ -212,7 +213,7 @@ namespace Game
         {
             timer.Stop();
             buffer.Graphics.DrawString("Конец игры", new Font(FontFamily.GenericSansSerif,
-            60, FontStyle.Underline), Brushes.White, 200, 100);
+            60, FontStyle.Underline), Brushes.White, 200, 80);
             buffer.Render();
         }
     }
