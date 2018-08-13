@@ -27,5 +27,11 @@ namespace Game
             Direction.Y = (Position.Y < 0 || Position.Y > Game.Height) ? -Direction.Y : Direction.Y;
         }
 
+        public override void Crash()
+        {
+            Size.Height = Size.Height / 2;
+            Size.Width = Size.Width / 2;
+        }
+
     }
 }

@@ -14,6 +14,8 @@ namespace Game
         protected Point Direction;
         protected Size Size;
 
+        public delegate void Message();
+
         public Rectangle Rect
         {
             get
@@ -49,7 +51,8 @@ namespace Game
         public abstract void Draw();
 
         public abstract void Update();
-        
+
+        public abstract void Crash();
 
         private bool IsInWindow(Point pos)
         {

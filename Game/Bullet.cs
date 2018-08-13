@@ -18,5 +18,8 @@ namespace Game
         {
             Position.X = Position.X + 2;
         }
+
+        public override void Crash()
+        { }
     }
 }

@@ -19,10 +19,20 @@ namespace Game
 
         public override void Update()
         {
-            Position.X -= Direction.X;
-            Position.Y += Direction.Y;
-            Direction.X = (Position.X < 0 || Position.X > Game.Width) ? -Direction.X : Direction.X;
-            Direction.Y = (Position.Y < 0 || Position.Y > Game.Height) ? -Direction.Y : Direction.Y;
+            Position.X += Direction.X;
+            if (Position.X < -Size.Width)
+            {
+                Random rnd = new Random(Position.Y);
+                Position.X = Game.Width + Size.Width;
+                Position.Y = (rnd.Next() % (Game.Height - 120)) + 60;
+                Direction.X = -5 * ((rnd.Next() % 10) + 5);
+            }
+            //Position.X -= Direction.X;
+            //Position.Y += Direction.Y;
+            //Direction.X = (Position.X < 0 || Position.X > Game.Width) ? -Direction.X : Direction.X;
+            //Direction.Y = (Position.Y < 0 || Position.Y > Game.Height) ? -Direction.Y : Direction.Y;
         }
+        public override void Crash()
+        { }
     }
 }

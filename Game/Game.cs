@@ -27,10 +27,13 @@ namespace Game
 		/// </summary>
         public static int Height { get; set; }
 
+        // Создаём таймер
+        private static Timer timer = new Timer();
         public static List<BaseObject> objs;
 
         private static Bullet bullet;
-        private static Asteroid[] asteroids;
+        private static Ship ship;
+        //private static Asteroid[] asteroids;
 
         /// <summary>
 		/// Конструктор по умолчанию
@@ -83,10 +86,21 @@ namespace Game
             buffer = context.Allocate(g, new Rectangle(0, 0, Width, Height));
 
             // Создаём таймер
-            Timer timer = new Timer();
+            //Timer timer = new Timer();
             timer.Interval = 100;
             timer.Start();
             timer.Tick += Timer_Tick;
+
+            Ship.MessageDie += Finish;
+            form.KeyDown += Form_KeyDown;
+        }
+
+        private static void Form_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.ControlKey) bullet = new Bullet(new
+            Point(ship.Rect.X + 10, ship.Rect.Y + 4), new Point(4, 0), new Size(4, 1));
+            if (e.KeyCode == Keys.Up) ship.Up();
+            if (e.KeyCode == Keys.Down) ship.Down();
         }
 
         /// <summary>
@@ -110,7 +124,11 @@ namespace Game
             {
                 obj.Draw();
             }
-            bullet.Draw();
+            bullet?.Draw();
+            ship?.Draw();
+            if (ship != null)
+                buffer.Graphics.DrawString("Энергия:" + ship.Energy,
+                SystemFonts.DefaultFont, Brushes.White, 0, 0);
             buffer.Render();
         }
 
@@ -122,7 +140,7 @@ namespace Game
             BaseObject deletedObject = null;
             BaseObject movedObject = null;
 
-            bullet.Update();
+            bullet?.Update();
             foreach (BaseObject obj in objs)
             {
                 obj.Update();
@@ -135,6 +153,12 @@ namespace Game
                         movedObject = obj;
                         
                     }
+                    if (!obj.Collision(ship)) continue;
+                    obj.Crash();
+                    Random rnd = new Random();
+                    ship?.EnergyLow(rnd.Next(1, 10));
+                    System.Media.SystemSounds.Asterisk.Play();
+                    if (ship.Energy <= 0) ship?.Die();
                 }
             }
 
@@ -155,20 +179,25 @@ namespace Game
 		/// </summary>
         public static void Load()
         {
-            var rand = new Random();
+            Random rand = new Random();
 
             objs = new List<BaseObject>();
 
-            for (var i = 0; i < 30; i++)
+            int starCount = 30;
+            int asteroidCount = 15;
+
+
+            for (int i = 0; i < starCount; i++)
             {
-                objs.Add(new Star(new Point(600, i * 20), new Point(15 - i, 15 - i), new Size(10, 10)));
+                objs.Add(new Star(new Point(600, i * 20), new Point( - i, 0), new Size(5, 5)));
             }
 
-            bullet = new Bullet(new Point(0, 200), new Point(5, 0), new Size(4, 1));
+            bullet = new Bullet(new Point(10, 200), new Point(5, 0), new Size(4, 1));
 
-            asteroids = new Asteroid[15];
+            ship = new Ship(new Point(10, 195), new Point(5, 5), new Size(10, 10));
+            //asteroids = new Asteroid[15];
 
-            for (var i = 0; i < 15; i++)
+            for (int i = 0; i < asteroidCount; i++)
             {
                 int r = rand.Next(5, 50);
                 objs.Add(new Asteroid(new Point(100, rand.Next(0, Game.Height)), new Point(-r / 5, r), new Size(r, r)));
@@ -176,6 +205,15 @@ namespace Game
 
 
 
+        }
+
+
+        public static void Finish()
+        {
+            timer.Stop();
+            buffer.Graphics.DrawString("Конец игры", new Font(FontFamily.GenericSansSerif,
+            60, FontStyle.Underline), Brushes.White, 200, 100);
+            buffer.Render();
         }
     }
 }
