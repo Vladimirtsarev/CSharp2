@@ -6,47 +6,103 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace WindowsFormsApplication4
+namespace Game
 {
+    /// <summary>
+    /// Игра
+    /// </summary>
     static class Game
     {
         private static BufferedGraphicsContext context;
+        /// <summary>
+        /// Буфер кадра
+        /// </summary>
         public static BufferedGraphics buffer;
+        /// <summary>
+		/// Свойство Ширины игрового поля
+		/// </summary>
         public static int Width { get; set; }
-        public static int Heigth { get; set; }
+        /// <summary>
+		/// Свойство Высоты игрового поля
+		/// </summary>
+        public static int Height { get; set; }
 
         public static List<BaseObject> objs;
 
         private static Bullet bullet;
         private static Asteroid[] asteroids;
+
+        /// <summary>
+		/// Конструктор по умолчанию
+		/// </summary>
         static Game() { }
 
+        /// <summary>
+        /// Инициализация элементов игры
+        /// </summary>
+        /// <param name="form">Форма в которую будет идти отрисовка игры</param>
         public static void Init(Form form)
         {
+            // Графическое устройство для вывода графики
             Graphics g;
             context = BufferedGraphicsManager.Current;
 
 
             g = form.CreateGraphics();
 
+            // Создаем объект (поверхность рисования) и связываем его с формой
+            // Запоминаем размеры формы
             Width = form.Width;
-            Heigth = form.Height;
+            Height = form.Height;
+            int maxWidth, minWidth, maxHeight, minHeight;
+            minWidth = 0;
+            maxWidth = 2000;
+            minHeight = 0;
+            maxHeight = 2000;
+
+            if (Width < minWidth)
+            {
+                throw new ArgumentOutOfRangeException("Width", Width, "Ширина не может быть меньше " + minWidth);
+            }
+            if (Height < minHeight)
+            {
+                throw new ArgumentOutOfRangeException("Height", Height, "Высота не может быть меньше " + minHeight);
+            }
+            if (Width > maxWidth)
+            {
+                throw new ArgumentOutOfRangeException("Width", Width, "Ширина не может быть больше " + maxWidth);
+            }
+            if (Height > maxHeight)
+            {
+                throw new ArgumentOutOfRangeException("Height", Height, "Высота не может быть больше " + maxHeight);
+            }
+
+            // Загрузка объектов
             Load();
+            // Связываем буфер в памяти с графическим объектом
+            buffer = context.Allocate(g, new Rectangle(0, 0, Width, Height));
 
-            buffer = context.Allocate(g, new Rectangle(0, 0, Width, Heigth));
-
+            // Создаём таймер
             Timer timer = new Timer();
             timer.Interval = 100;
             timer.Start();
             timer.Tick += Timer_Tick;
         }
 
+        /// <summary>
+        /// Таймер тик
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private static void Timer_Tick(object sender, EventArgs e)
         {
             Draw();
             Update();
         }
 
+        /// <summary>
+		/// Метод отрисовки
+		/// </summary>
         public static void Draw()
         {
             buffer.Graphics.Clear(Color.Black);
@@ -58,6 +114,9 @@ namespace WindowsFormsApplication4
             buffer.Render();
         }
 
+        /// <summary>
+		/// Обновление элементов
+		/// </summary>
         public static void Update()
         {
             BaseObject deletedObject = null;
@@ -85,12 +144,15 @@ namespace WindowsFormsApplication4
             {
                 var rand = new Random();
                 int r = rand.Next(5, 50);
-                objs.Add(new Asteroid(new Point(100, rand.Next(0, Game.Heigth)), new Point(-r / 5, r), new Size(r, r)));
+                objs.Add(new Asteroid(new Point(100, rand.Next(0, Game.Height)), new Point(-r / 5, r), new Size(r, r)));
                 objs.Remove(deletedObject);
                 
             }
         }
 
+        /// <summary>
+		/// Метод загрузки объектов для инициализации
+		/// </summary>
         public static void Load()
         {
             var rand = new Random();
@@ -109,7 +171,7 @@ namespace WindowsFormsApplication4
             for (var i = 0; i < 15; i++)
             {
                 int r = rand.Next(5, 50);
-                objs.Add(new Asteroid(new Point(100, rand.Next(0, Game.Heigth)), new Point(-r / 5, r), new Size(r, r)));
+                objs.Add(new Asteroid(new Point(100, rand.Next(0, Game.Height)), new Point(-r / 5, r), new Size(r, r)));
             }
 
 

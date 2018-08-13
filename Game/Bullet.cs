@@ -5,18 +5,18 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace WindowsFormsApplication4
+namespace Game
 {
     class Bullet : BaseObject
     {
         public Bullet(Point pos, Point dir, Size size) : base(pos, dir, size) { }
         public override void Draw()
         {
-            Game.buffer.Graphics.DrawRectangle(Pens.Orange, Pos.X, Pos.Y, Size.Width, Size.Height);
+            Game.buffer.Graphics.DrawRectangle(Pens.Orange, Position.X, Position.Y, Size.Width, Size.Height);
         }
         public override void Update()
         {
-            Pos.X = Pos.X + 2;
+            Position.X = Position.X + 2;
         }
     }
 }

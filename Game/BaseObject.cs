@@ -6,27 +6,43 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace WindowsFormsApplication4
+namespace Game
 {
     abstract class BaseObject : ICollision
     {
-        protected Point Pos;
-        protected Point Dir;
+        protected Point Position;
+        protected Point Direction;
         protected Size Size;
 
         public Rectangle Rect
         {
             get
             {
-                return new Rectangle(Pos, Size);
+                return new Rectangle(Position, Size);
             }
         }
 
+        /// <summary>
+		/// Конструктор базового объекта
+		/// </summary>
+		/// <param name="prm">Параметры объекта</param>
+        public BaseObject(BaseObjectParams prm)
+        {
+            Position = prm.Position;
+            Direction = prm.Direction;
+            Size = prm.Size;
+        }
+
+        /// <summary>
+        /// Конструктор базового объекта
+        /// </summary>
+        /// <param name="pos">Позиция</param>
+        /// <param name="dir">Направление</param>
+        /// <param name="size">Размер</param>
         public BaseObject(Point pos, Point dir, Size size)
         {
-
-            Pos = pos;////IsInWindow(pos) ? pos : new Point(Game.Width / 2, Game.Heigth / 2);
-            Dir = dir;
+            Position = pos;  ////IsInWindow(pos) ? pos : new Point(Game.Width / 2, Game.Heigth / 2);
+            Direction = dir;
             Size = size;
         }
 
@@ -37,7 +53,7 @@ namespace WindowsFormsApplication4
 
         private bool IsInWindow(Point pos)
         {
-            return Pos.X > 0 && Pos.X < Game.Width && Pos.Y > 0 && Pos.Y < Game.Heigth;
+            return Position.X > 0 && Position.X < Game.Width && Position.Y > 0 && Position.Y < Game.Height;
         }
 
         public bool Collision(ICollision obj)

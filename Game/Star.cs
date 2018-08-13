@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace WindowsFormsApplication4
+namespace Game
 {
     class Star : BaseObject
     {
@@ -13,16 +13,16 @@ namespace WindowsFormsApplication4
 
         public override void Draw()
         {
-            Game.buffer.Graphics.DrawLine(Pens.White, Pos.X, Pos.Y, Pos.X + Size.Width, Pos.Y + Size.Height);
-            Game.buffer.Graphics.DrawLine(Pens.White, Pos.X + Size.Width, Pos.Y, Pos.X, Pos.Y + Size.Height);
+            Game.buffer.Graphics.DrawLine(Pens.White, Position.X, Position.Y, Position.X + Size.Width, Position.Y + Size.Height);
+            Game.buffer.Graphics.DrawLine(Pens.White, Position.X + Size.Width, Position.Y, Position.X, Position.Y + Size.Height);
         }
 
         public override void Update()
         {
-            Pos.X -= Dir.X;
-            Pos.Y += Dir.Y;
-            Dir.X = (Pos.X < 0 || Pos.X > Game.Width) ? -Dir.X : Dir.X;
-            Dir.Y = (Pos.Y < 0 || Pos.Y > Game.Heigth) ? -Dir.Y : Dir.Y;
+            Position.X -= Direction.X;
+            Position.Y += Direction.Y;
+            Direction.X = (Position.X < 0 || Position.X > Game.Width) ? -Direction.X : Direction.X;
+            Direction.Y = (Position.Y < 0 || Position.Y > Game.Height) ? -Direction.Y : Direction.Y;
         }
     }
 }
