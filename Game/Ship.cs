@@ -7,12 +7,20 @@ namespace Game
         public static event Message MessageDie;
         private int _energy = 100;
         public int Energy => _energy;
+        private int _ypos;
+        public int Ypos => _ypos;
+
         public void EnergyLow(int n)
         {
             _energy -= n;
         }
+        public void EnergyIncrease(int n)
+        {
+            _energy += n;
+        }
         public Ship(Point pos, Point dir, Size size) : base(pos, dir, size)
         {
+            _ypos = Position.Y;
         }
 
         /// <summary>
@@ -31,10 +39,12 @@ namespace Game
         public void Up()
         {
             if (Position.Y > 0) Position.Y = Position.Y - Direction.Y;
+            _ypos = Position.Y;
         }
         public void Down()
         {
             if (Position.Y < Game.Height) Position.Y = Position.Y + Direction.Y;
+            _ypos = Position.Y;
         }
         public void Die()
         {

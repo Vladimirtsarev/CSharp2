@@ -25,7 +25,7 @@ namespace Game
         public override void Update()
         {
             Position.X += Direction.X;
-            Position.Y += Direction.Y;
+            //Position.Y += Direction.Y;
             //Direction.X = (Position.X < 0 || Position.X > Game.Width) ? - Direction.X : Direction.X;
             //Direction.Y = (Position.Y < 0 || Position.Y > Game.Height) ? -Direction.Y : Direction.Y;
             Position.X = (Position.X < -Size.Width) ? (Game.Width+Size.Width): Position.X;

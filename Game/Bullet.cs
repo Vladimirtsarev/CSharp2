@@ -19,9 +19,9 @@ namespace Game
             Position.X = Position.X + 3;
             if (Position.X >= 810)
                 Position.X = 50;
+            
         }
         
-        public override void Crash()
-        { }
+        public override void Crash(){ }
     }
 }

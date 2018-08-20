@@ -24,9 +24,10 @@ namespace Game
         [STAThread]
         static void Main()
         {
-            var form = new Form();
+            Form form = new Form();
             form.Width = 800;
             form.Height = 600;
+            
             Game.Init(form);
             Game.Draw();
             Application.Run(form);
